@@ -11,8 +11,12 @@ public class GameManager : MonoBehaviour
     public RectTransform tableTransform;
     public bool Player1Move;
     public bool gameFinished;
+    public int winner; //0 - nobody has won, 1-player1 has won, 2-plaayer2 hasWon
+    public Sprite greenImageX;
+    public Sprite greenImageO;
     void Start()
     {
+        winner = 0;
         gameFinished = false;
         Player1Move = true;
         CreateTable();
@@ -60,29 +64,30 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < 3; j++)
             {
                 int x_puted = buttons[i, j].GetComponent<ButtonController>().whatIsPutted;
-                if(x_puted == 0)
+                if (x_puted == 0)
                 {
                     line_i_full_of_X = false;
                     line_i_full_of_O = false;
                 }
 
-                if(x_puted == 1)
+                if (x_puted == 1)
                     line_i_full_of_O = false;
 
                 if (x_puted == 2)
                     line_i_full_of_X = false;
-            } 
+            }
 
             if (line_i_full_of_O || line_i_full_of_X)
                 return true;
         }
-
-        for(int i = 0; i < 3; i++)
+        //[[[0,0], [1,0], [2,0]], [[0,0], [1,0], [2,0]]]
+        //who is the winner
+        for (int i = 0; i < 3; i++)
         {
             bool column_i_full_of_X = true;
             bool column_i_full_of_O = true;
 
-            for(int j = 0;j < 3; j++)
+            for (int j = 0; j < 3; j++)
             {
                 int x_puted = buttons[j, i].GetComponent<ButtonController>().whatIsPutted;
 
@@ -103,7 +108,7 @@ public class GameManager : MonoBehaviour
         }
         bool diagonal_full_of_X = true;
         bool diagonal_full_of_O = true;
-        for (int i=0;i<3;i++)
+        for (int i = 0; i < 3; i++)
         {
             int x_puted = buttons[i, i].GetComponent<ButtonController>().whatIsPutted;
 
@@ -111,7 +116,7 @@ public class GameManager : MonoBehaviour
             {
                 diagonal_full_of_X = false;
                 diagonal_full_of_O = false;
-            } 
+            }
 
             if (x_puted == 1)
                 diagonal_full_of_O = false;
@@ -119,7 +124,7 @@ public class GameManager : MonoBehaviour
             if (x_puted == 2)
                 diagonal_full_of_X = false;
         }
-        
+
         if (diagonal_full_of_O || diagonal_full_of_X)
             return true;
 
@@ -148,18 +153,18 @@ public class GameManager : MonoBehaviour
         if (diagonal_full_of_O || diagonal_full_of_X)
             return true;
 
-        
+
         return false;
     }
 
     public bool NobodyCanWon()
     {
-        
+
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 if (buttons[i, j].GetComponent<ButtonController>().whatIsPutted == 0)
                     return false;
-       
+
         return true;
     }
 
@@ -168,5 +173,85 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void AnimateWinner()
+    {
 
+        //luam pt x toate posibilitatile
+
+        for (int i = 0; i < 3; i++) {
+            bool allOfX = true;
+            for (int j = 0; j < 3; j++)
+                if (buttons[i, j].GetComponent<ButtonController>().whatIsPutted != 1)
+                    allOfX = false;
+            if(allOfX == true)
+            {
+                //avem o linie castigatoare si vom retine coordonatele
+                    for (int j = 0; j < 3; j++)
+                    {
+                        buttons[i, j].GetComponent<Image>().sprite = greenImageX;
+                    }
+                }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            bool allOfX = true;
+            for (int j = 0; j < 3; j++)
+                if (buttons[j, i].GetComponent<ButtonController>().whatIsPutted != 1)
+                    allOfX = false;
+            if (allOfX == true)
+            {
+                //avem o linie castigatoare si vom retine coordonatele
+                for (int j = 0; j < 3; j++)
+                    buttons[j, i].GetComponent<Image>().sprite = greenImageX;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            bool allOf0 = true;
+            for (int j = 0; j < 3; j++)
+                if (buttons[i, j].GetComponent<ButtonController>().whatIsPutted != 2)
+                    allOf0 = false;
+            if (allOf0 == true)
+            {
+                //avem o linie castigatoare si vom retine coordonatele
+                for (int j = 0; j < 3; j++)
+                {
+                    buttons[i, j].GetComponent<Image>().sprite = greenImageO;
+                }
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            bool allOf0 = true;
+            for (int j = 0; j < 3; j++)
+                if (buttons[j, i].GetComponent<ButtonController>().whatIsPutted != 2)
+                    allOf0 = false;
+            if (allOf0 == true)
+            {
+                //avem o linie castigatoare si vom retine coordonatele
+                for (int j = 0; j < 3; j++)
+                    buttons[j, i].GetComponent<Image>().sprite = greenImageO;
+            }
+        }
+
+
+
+    }
 }

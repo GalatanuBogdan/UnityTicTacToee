@@ -29,8 +29,10 @@ public class ButtonController : MonoBehaviour
 
                 if(gameOver == true)
                 {
+                    GameObject.Find("GameManager").GetComponent<GameManager>().winner = 1;
                     GameObject.Find("GameOverStatus").GetComponent<Text>().text = "Player X has WON!";
                     GameObject.Find("GameManager").GetComponent<GameManager>().gameFinished = true;
+                    GameObject.Find("GameManager").GetComponent<GameManager>().AnimateWinner();
                 }
                 else
                 {
@@ -38,8 +40,10 @@ public class ButtonController : MonoBehaviour
                 
                     if(nobodyCanWon == true)
                     {
+                        GameObject.Find("GameManager").GetComponent<GameManager>().winner = 0;
                         GameObject.Find("GameManager").GetComponent<GameManager>().gameFinished = true;
                         GameObject.Find("GameOverStatus").GetComponent<Text>().text = "Nobody has WON!";
+                     
                     }
 
                 }
@@ -56,16 +60,20 @@ public class ButtonController : MonoBehaviour
 
                 if (gameOver == true)
                 {
+                    GameObject.Find("GameManager").GetComponent<GameManager>().winner = 2;
                     GameObject.Find("GameOverStatus").GetComponent<Text>().text = "Player 0 has WON!";
                     GameObject.Find("GameManager").GetComponent<GameManager>().gameFinished = true;
+                    GameObject.Find("GameManager").GetComponent<GameManager>().AnimateWinner();
                 }
 
                 bool nobodyCanWon = GameObject.Find("GameManager").GetComponent<GameManager>().NobodyCanWon();
 
                 if (nobodyCanWon == true)
                 {
+                    GameObject.Find("GameManager").GetComponent<GameManager>().winner = 0;
                     GameObject.Find("GameManager").GetComponent<GameManager>().gameFinished = true;
                     GameObject.Find("GameOverStatus").GetComponent<Text>().text = "Nobody has WON!";
+                    
                 }
 
 
